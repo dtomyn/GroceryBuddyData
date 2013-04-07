@@ -9,6 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using MyDataServices.Code.Formatters;
 
 namespace MyDataServices
 {
@@ -26,11 +27,14 @@ namespace MyDataServices
 
             RegisterApiRoutes(GlobalConfiguration.Configuration);
 
+            //register cors handler
+            GlobalConfiguration.Configuration.MessageHandlers.Add(new CorsHandler());
+
             //Debugger.Break();
 
             // WebApi Configuration to hook up formatters and message handlers
             // optional
-           // RegisterApis(GlobalConfiguration.Configuration);
+           //RegisterApis(GlobalConfiguration.Configuration);
         }
 
         private void RegisterApiRoutes(HttpConfiguration configuration)
@@ -48,20 +52,24 @@ namespace MyDataServices
 
         public static void RegisterApis(HttpConfiguration config)
         {
-            // Display errors in response locally
-            GlobalConfiguration
-                   .Configuration
-                   .IncludeErrorDetailPolicy =
-                    IncludeErrorDetailPolicy.Always;
-
-
-            // Add a custom JsonP converter which effectively replaces the default JSON formatter     
-            // you can configue the custom formatter in it's creation code
+            //register JSONP media type formatter
             config.Formatters.Insert(0, new JsonpFormatter());
 
 
-            // Add the exception filter
-            config.Filters.Add(new UnhandledExceptionFilter());
+            //// Display errors in response locally
+            //GlobalConfiguration
+            //       .Configuration
+            //       .IncludeErrorDetailPolicy =
+            //        IncludeErrorDetailPolicy.Always;
+
+
+            //// Add a custom JsonP converter which effectively replaces the default JSON formatter     
+            //// you can configue the custom formatter in it's creation code
+            //config.Formatters.Insert(0, new JsonpFormatter());
+
+
+            //// Add the exception filter
+            //config.Filters.Add(new UnhandledExceptionFilter());
         }
 
     }

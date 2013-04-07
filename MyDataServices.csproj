@@ -169,6 +169,7 @@
     <Compile Include="Code\Binders\SimplePostVariableParameterBinding.cs" />
     <Compile Include="Code\Filters\ApiMessageError.cs" />
     <Compile Include="Code\Filters\UnhandledExceptionFilter.cs" />
+    <Compile Include="Code\Formatters\CorsHandler.cs" />
     <Compile Include="Code\Formatters\JavaScriptSerializerFormatter.cs" />
     <Compile Include="Code\Formatters\JsonNetFormatter.cs" />
     <Compile Include="Code\Formatters\JsonpFormatter.cs" />
