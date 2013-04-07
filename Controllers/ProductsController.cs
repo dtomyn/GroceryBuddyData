@@ -19,9 +19,9 @@ namespace MyDataServices.Controllers
             {
                 HttpContext.Current.Application["productContext"] = new List<Product>();
                 ((List<Product>)HttpContext.Current.Application["productContext"]).Add(
-                    new Product { Sku = "12345", Name = "Product 1", IsDeleted = false, Description = "Description 1" });
+                    new Product { Sku = "12345", Name = "Product 1", Description = "Description 1" });
                 ((List<Product>)HttpContext.Current.Application["productContext"]).Add(
-                    new Product { Sku = "2345", Name = "Product 2", IsDeleted = false, Description = "Description 2" });
+                    new Product { Sku = "2345", Name = "Product 2", Description = "Description 2" });
             }
             ProductContext = (List<Product>)(HttpContext.Current.Application["productContext"]);
         }
@@ -62,9 +62,16 @@ namespace MyDataServices.Controllers
             }
             else
             {
-                current.Name = value.Name;
-                current.Description = value.Description;
-                current.IsDeleted = value.IsDeleted;
+                if (value.IsDeleted)
+                {
+                    Delete(sku);
+                }
+                else
+                {
+                    current.Name = value.Name;
+                    current.Description = value.Description;
+                    current.IsDeleted = value.IsDeleted;
+                }
             }
         }
 

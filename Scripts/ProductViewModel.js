@@ -21,23 +21,25 @@ var viewModel =
 
 $(document).ready(function () {
     $(".right-section").hide();
-    $.ajax(
-        {
-            url: "/api/Products",
-            contentType: "text/jsonp",
-            type: "GET",
-            success: function (data) {
-                alert('success. products before load: ' + viewModel.products().length + ' data to load ' + data.length);
-                $.each(data, function (index) {
-                    viewModel.products.push(toProductKoObservable(data[index]));
-                });
-                alert('success. products after load: ' + viewModel.products().length + ' data to load ' + data.length);
-                ko.applyBindings(viewModel);
-            },
-            error: function (data) {
-                alert("ERROR");
-            }
-        });
+    refreshProducts();
+
+    function refreshProducts() {
+        $.ajax(
+            {
+                url: "/api/Products",
+                contentType: "text/json",
+                type: "GET",
+                success: function (data) {
+                    $.each(data, function (index) {
+                        viewModel.products.push(toProductKoObservable(data[index]));
+                    });
+                    ko.applyBindings(viewModel);
+                },
+                error: function (data) {
+                    alert("ERROR");
+                }
+            });
+    }
 
     function toProductKoObservable(product) {
         return {
@@ -62,9 +64,14 @@ $(document).ready(function () {
             $.ajax(
             {
                 url: vUrl,
-                contentType: "application/jsonp;charset=utf-8",
+                contentType: "application/json;charset=utf-8",
                 type: action,
-                data: JSON.stringify(current)
+                data: JSON.stringify(current),
+                success: function () {
+                },
+                error: function (data) {
+                    alert("ERROR");
+                }
             });
         });
 
