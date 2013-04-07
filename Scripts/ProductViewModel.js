@@ -3,7 +3,7 @@ var dataLocation = 'http://grocerybuddydata.azurewebsites.net';
 //var dataLocation = 'http://localhost:54328';
 
 /// Class to represent a product
-var Product = function (id, sku, name, description, isNew) {
+var Product = function (id, sku, name, description, isDeleted, isNew) {
     var self = this;
 
     // #region Properties
@@ -11,6 +11,7 @@ var Product = function (id, sku, name, description, isNew) {
     Sku: ko.observable(sku);
     Name: ko.observable(name);
     Description: ko.observable(description);
+    IsDeleted: ko.observable(isDeleted);
     IsNew: ko.observable(isNew);
     // #endregion Properties
 
@@ -54,14 +55,21 @@ var viewModel =
         $(".right-section").show();
     },
     newProduct: function () {
-        this.products.push(
-            new Product(
-                this.products().length + 1
-                , this.products().length + 1
-                , "New " + this.products().length
-                , "Description " + this.products().length
-                , true
-            ));
+        this.products.push({
+                Id: ko.observable(this.products().length + 1),
+                Sku: ko.observable(this.products().length + 1),
+                Name: ko.observable("New " + this.products().length),
+                Description: ko.observable("Description " + this.products().length),
+                IsNew: ko.observable(true)
+            });
+        //this.products.push(
+        //    new Product(
+        //        this.products().length + 1
+        //        , this.products().length + 1
+        //        , "New " + this.products().length
+        //        , "Description " + this.products().length
+        //        , false, true
+        //    ));
     }
 }
 
@@ -80,11 +88,20 @@ $(document).ready(function () {
     }
 
     function toProductKoObservable(product) {
+        //return new Product(
+        //    product.Id
+        //    , product.Sku
+        //    , product.Name
+        //    , product.Description
+        //    , false
+        //    , false
+        //    );
         return {
             Id: ko.observable(product.Id),
             Sku: ko.observable(product.Sku),
             Name: ko.observable(product.Name),
             Description: ko.observable(product.Description),
+            IsDeleted: ko.observable(product.IsDeleted)
         };
     }
 

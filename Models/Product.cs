@@ -15,11 +15,11 @@ namespace MyDataServices.Models
         //public bool IsNew { get; set; }
 
         //public ProductStorePrice[] Stores { get; set; }
-        public List<ProductStorePrice> StoresAndPrices { get; set; }
+        //public List<ProductStorePrice> StoresAndPrices { get; set; }
 
         public Product()
         {
-            StoresAndPrices = new List<ProductStorePrice>();
+            //StoresAndPrices = new List<ProductStorePrice>();
         }
     }
 
@@ -37,15 +37,15 @@ namespace MyDataServices.Models
                         Name = "Product 1",
                         Description = "Description 1"
                     };
-                p.StoresAndPrices.Add
-                    (
-                        new ProductStorePrice()
-                        {
-                            TheStore = StoreConstants.Safeway
-                            , Price = 2.25M
-                            , PriceDate = new DateTime(2013, 4, 3)
-                        }
-                    );
+                //p.StoresAndPrices.Add
+                //    (
+                //        new ProductStorePrice()
+                //        {
+                //            TheStore = StoreConstants.Safeway
+                //            , Price = 2.25M
+                //            , PriceDate = new DateTime(2013, 4, 3)
+                //        }
+                //    );
                 return p;
             }
         }
@@ -62,15 +62,15 @@ namespace MyDataServices.Models
                         Name = "Product 2",
                         Description = "Description 1"
                     };
-                p.StoresAndPrices.Add
-                    (
-                        new ProductStorePrice()
-                        {
-                            TheStore = StoreConstants.Safeway
-                            , Price = 2.25M
-                            , PriceDate = new DateTime(2013, 4, 3)
-                        }
-                    );
+                //p.StoresAndPrices.Add
+                //    (
+                //        new ProductStorePrice()
+                //        {
+                //            TheStore = StoreConstants.Safeway
+                //            , Price = 2.25M
+                //            , PriceDate = new DateTime(2013, 4, 3)
+                //        }
+                //    );
                 return p;
             }
         }

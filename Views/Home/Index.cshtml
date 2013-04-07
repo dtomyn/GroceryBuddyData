@@ -6,8 +6,7 @@
 
         <ul data-bind="foreach: products">
             <li style="list-style: none">
-                <a data-bind="text: Name, id: Id" href="#"></a>
-                <input type="button" value="Select" data-bind="click: $parent.selectProduct" />
+                <input type="button" value="Select" data-bind="click: $parent.selectProduct, value: Sku" />
             </li>
         </ul>
     </div>
