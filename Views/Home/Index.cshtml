@@ -6,13 +6,17 @@
 
         <ul data-bind="foreach: products">
             <li style="list-style: none">
-                <a data-bind="text: Name, id: Sku" href="#"></a>
+                <a data-bind="text: Name, id: Id" href="#"></a>
                 <input type="button" value="Select" data-bind="click: $parent.selectProduct" />
             </li>
         </ul>
     </div>
     <div class="right-section" style="height: 600px; width: 75%; float: left; background-color: #d9d9d9" 
         data-bind="with: selectedProduct">
+        <div>
+            Id:
+            <input data-bind="value: Id" />
+        </div>
         <div>
             Sku:
             <input data-bind="value: Sku" />

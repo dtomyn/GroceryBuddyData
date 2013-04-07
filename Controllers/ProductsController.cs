@@ -19,9 +19,9 @@ namespace MyDataServices.Controllers
             {
                 HttpContext.Current.Application["productContext"] = new List<Product>();
                 ((List<Product>)HttpContext.Current.Application["productContext"]).Add(
-                    new Product { Sku = "12345", Name = "Product 1", Description = "Description 1" });
+                    new Product { Id=0, Sku = "12345", Name = "Product 1", Description = "Description 1" });
                 ((List<Product>)HttpContext.Current.Application["productContext"]).Add(
-                    new Product { Sku = "2345", Name = "Product 2", Description = "Description 2" });
+                    new Product { Id=1, Sku = "2345", Name = "Product 2", Description = "Description 2" });
             }
             ProductContext = (List<Product>)(HttpContext.Current.Application["productContext"]);
         }
@@ -35,7 +35,7 @@ namespace MyDataServices.Controllers
         // GET api/values/5
         public Product Get(string sku)
         {
-            Product current = ProductContext.Find(b => b.Sku.Equals(sku, StringComparison.OrdinalIgnoreCase) && !b.IsDeleted);
+            Product current = ProductContext.FirstOrDefault(b => b.Sku.Equals(sku, StringComparison.OrdinalIgnoreCase) && !b.IsDeleted);
             if (current == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -49,13 +49,26 @@ namespace MyDataServices.Controllers
         // POST api/values
         public void Post([FromBody]Product value)
         {
-            ProductContext.Add(value);
+            //add only if does not exist already... otherwise update
+            Product current = ProductContext.FirstOrDefault(b => b.Id.Equals(value.Id));
+            if (current == null)
+            {
+                ProductContext.Add(value);
+            }
+            else
+            {
+                current.Id = value.Id;
+                current.Name = value.Name;
+                current.Description = value.Description;
+                current.IsDeleted = value.IsDeleted;
+            }
         }
 
         // PUT api/values/5
-        public void Put(string sku, [FromBody]Product value)
+        //public void Put(string sku, [FromBody]Product value)
+        public void Put(int id, [FromBody]Product value)
         {
-            Product current = ProductContext.Find(b => b.Sku.Equals(sku, StringComparison.OrdinalIgnoreCase));
+            Product current = ProductContext.FirstOrDefault(b => b.Id.Equals(id));
             if (current == null || current.IsDeleted)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -64,10 +77,11 @@ namespace MyDataServices.Controllers
             {
                 if (value.IsDeleted)
                 {
-                    Delete(sku);
+                    Delete(id);
                 }
                 else
                 {
+                    current.Id = value.Id;
                     current.Name = value.Name;
                     current.Description = value.Description;
                     current.IsDeleted = value.IsDeleted;
@@ -76,9 +90,9 @@ namespace MyDataServices.Controllers
         }
 
         // DELETE api/values/5
-        public void Delete(string sku)
+        public void Delete(int id)
         {
-            Product current = ProductContext.Find(b => b.Sku.Equals(sku, StringComparison.OrdinalIgnoreCase));
+            Product current = ProductContext.FirstOrDefault(b => b.Id.Equals(id));
             if (current == null || current.IsDeleted)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);

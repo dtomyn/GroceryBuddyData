@@ -40,6 +40,7 @@ var viewModel =
     },
     newProduct: function () {
         this.products.push({
+            Id: ko.observable(this.products().length + 1),
             Sku: ko.observable(this.products().length + 1),
             Name: ko.observable("New " + this.products().length),
             Description: ko.observable("Description " + this.products().length),
@@ -64,6 +65,7 @@ $(document).ready(function () {
 
     function toProductKoObservable(product) {
         return {
+            Id: ko.observable(product.Id),
             Sku: ko.observable(product.Sku),
             Name: ko.observable(product.Name),
             Description: ko.observable(product.Description),
@@ -77,7 +79,7 @@ $(document).ready(function () {
             var current = saveData[index];
             var action = "PUT";
             var stringyF = JSON.stringify(current);
-            var vUrl = "/api/Products?Sku=" + current.Sku;
+            var vUrl = "/api/Products?Id=" + current.Id;
             if (current.IsNew) {
                 action = "POST";
                 vUrl = "/api/Products";
