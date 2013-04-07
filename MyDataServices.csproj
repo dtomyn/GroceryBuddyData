@@ -173,12 +173,15 @@
     <Compile Include="Code\Formatters\JavaScriptSerializerFormatter.cs" />
     <Compile Include="Code\Formatters\JsonNetFormatter.cs" />
     <Compile Include="Code\Formatters\JsonpFormatter.cs" />
+    <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductStorePrice.cs" />
+    <Compile Include="Models\Store.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

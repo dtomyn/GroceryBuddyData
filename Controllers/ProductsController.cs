@@ -18,10 +18,8 @@ namespace MyDataServices.Controllers
             if (HttpContext.Current.Application["productContext"] == null)
             {
                 HttpContext.Current.Application["productContext"] = new List<Product>();
-                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(
-                    new Product { Id=0, Sku = "12345", Name = "Product 1", Description = "Description 1" });
-                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(
-                    new Product { Id=1, Sku = "2345", Name = "Product 2", Description = "Description 2" });
+                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.Product1);
+                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.Product2);
             }
             ProductContext = (List<Product>)(HttpContext.Current.Application["productContext"]);
         }

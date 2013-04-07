@@ -2,6 +2,21 @@
 var dataLocation = 'http://grocerybuddydata.azurewebsites.net';
 //var dataLocation = 'http://localhost:54328';
 
+/// Class to represent a product
+var Product = function (id, sku, name, description, isNew) {
+    var self = this;
+
+    // #region Properties
+    Id: ko.observable(id);
+    Sku: ko.observable(sku);
+    Name: ko.observable(name);
+    Description: ko.observable(description);
+    IsNew: ko.observable(isNew);
+    // #endregion Properties
+
+    return self;
+};
+
 function jsonp(url, callback) {
     // create a unique id
     var id = "_" + (new Date()).getTime();
@@ -39,13 +54,14 @@ var viewModel =
         $(".right-section").show();
     },
     newProduct: function () {
-        this.products.push({
-            Id: ko.observable(this.products().length + 1),
-            Sku: ko.observable(this.products().length + 1),
-            Name: ko.observable("New " + this.products().length),
-            Description: ko.observable("Description " + this.products().length),
-            IsNew: ko.observable(true)
-        });
+        this.products.push(
+            new Product(
+                this.products().length + 1
+                , this.products().length + 1
+                , "New " + this.products().length
+                , "Description " + this.products().length
+                , true
+            ));
     }
 }
 
@@ -69,7 +85,6 @@ $(document).ready(function () {
             Sku: ko.observable(product.Sku),
             Name: ko.observable(product.Name),
             Description: ko.observable(product.Description),
-            IsDeleted: ko.observable(product.IsDeleted)
         };
     }
 
