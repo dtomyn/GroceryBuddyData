@@ -1,4 +1,33 @@
 ﻿/// <reference path="_references.js" />
+var dataLocation = 'http://grocerybuddydata.azurewebsites.net';
+//var dataLocation = 'http://localhost:54328';
+
+function jsonp(url, callback) {
+    // create a unique id
+    var id = "_" + (new Date()).getTime();
+
+    // create a global callback handler
+    window[id] = function (result) {
+        // forward the call to specified handler                                       
+        if (callback)
+            callback(result);
+
+        // clean up: remove script and id
+        var sc = document.getElementById(id);
+        sc.parentNode.removeChild(sc);
+        window[id] = null;
+    }
+
+    url = url.replace("callback=?", "callback=" + id);
+
+    // create script tag that loads the 'JSONP script' 
+    // and executes it calling window[id] function                
+    var script = document.createElement("script");
+    script.setAttribute("id", id);
+    script.setAttribute("src", url);
+    script.setAttribute("type", "text/javascript");
+    document.body.appendChild(script);
+}
 
 var viewModel =
 {
@@ -24,21 +53,13 @@ $(document).ready(function () {
     refreshProducts();
 
     function refreshProducts() {
-        $.ajax(
-            {
-                url: "/api/Products",
-                contentType: "text/json",
-                type: "GET",
-                success: function (data) {
-                    $.each(data, function (index) {
-                        viewModel.products.push(toProductKoObservable(data[index]));
-                    });
-                    ko.applyBindings(viewModel);
-                },
-                error: function (data) {
-                    alert("ERROR");
-                }
-            });
+        jsonp((dataLocation + "/api/Products?callback=?"),
+               function (data) {
+                   $.each(data, function (index) {
+                       viewModel.products.push(toProductKoObservable(data[index]));
+                   });
+                   ko.applyBindings(viewModel);
+               });
     }
 
     function toProductKoObservable(product) {
@@ -74,6 +95,5 @@ $(document).ready(function () {
                 }
             });
         });
-
     });
 });

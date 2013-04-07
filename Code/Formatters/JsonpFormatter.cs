@@ -15,13 +15,13 @@ namespace MyDataServices
     /// Handles JsonP requests when requests are fired with text/javascript
     /// </summary>
     public class JsonpFormatter : JsonMediaTypeFormatter
-    {                
+    {
 
         public JsonpFormatter()
         {
             SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
             SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/javascript"));
-            
+
             JsonpParameterName = "callback";
         }
 
@@ -29,7 +29,7 @@ namespace MyDataServices
         ///  Name of the query string parameter to look for
         ///  the jsonp function name
         /// </summary>
-        public string JsonpParameterName {get; set; }
+        public string JsonpParameterName { get; set; }
 
         /// <summary>
         /// Captured name of the Jsonp function that the JSON call
@@ -41,7 +41,7 @@ namespace MyDataServices
         public override bool CanWriteType(Type type)
         {
             return true;
-        }       
+        }
 
         /// <summary>
         /// Override this method to capture the Request object
@@ -50,7 +50,7 @@ namespace MyDataServices
         /// <param name="request"></param>
         /// <param name="mediaType"></param>
         /// <returns></returns>
-        public override MediaTypeFormatter GetPerRequestFormatterInstance(Type type, HttpRequestMessage request, MediaTypeHeaderValue mediaType)
+        public override MediaTypeFormatter GetPerRequestFormatterInstance(Type type, System.Net.Http.HttpRequestMessage request, MediaTypeHeaderValue mediaType)
         {
             var formatter = new JsonpFormatter()
             {
@@ -66,13 +66,13 @@ namespace MyDataServices
 
             return formatter;
         }
-        
 
-        public override Task WriteToStreamAsync(Type type, object value, 
-                                        Stream stream, 
-                                        HttpContent content, 
+
+        public override Task WriteToStreamAsync(Type type, object value,
+                                        Stream stream,
+                                        HttpContent content,
                                         TransportContext transportContext)
-        {                                     
+        {
             if (string.IsNullOrEmpty(JsonpCallbackFunction))
                 return base.WriteToStreamAsync(type, value, stream, content, transportContext);
 
@@ -101,16 +101,21 @@ namespace MyDataServices
 
             return base.WriteToStreamAsync(type, value, stream, content, transportContext)
                        .ContinueWith(innerTask =>
-                            {
-                                if (innerTask.Status == TaskStatus.RanToCompletion)
-                                {
-                                    writer.Write(")");
-                                    writer.Flush();
-                                }
-                                writer.Dispose();
-                                return innerTask;
-                            }, TaskContinuationOptions.ExecuteSynchronously)
-                            .Unwrap();
+                       {
+                           if (innerTask.Status == TaskStatus.RanToCompletion)
+                           {
+                               writer.Write(")");
+                               writer.Flush();
+                           }
+
+                       }, TaskContinuationOptions.ExecuteSynchronously)
+                        .ContinueWith(innerTask =>
+                        {
+                            writer.Dispose();
+                            return innerTask;
+
+                        }, TaskContinuationOptions.ExecuteSynchronously)
+                        .Unwrap();
         }
 
         /// <summary>

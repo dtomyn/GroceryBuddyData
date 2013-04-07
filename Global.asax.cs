@@ -48,6 +48,11 @@ namespace MyDataServices
                                 controller = "ProductsController"
                             }
                         );
+            GlobalConfiguration
+                   .Configuration
+                   .Formatters
+                   .Insert(0, new JsonpFormatter());
+
         }
 
         public static void RegisterApis(HttpConfiguration config)
