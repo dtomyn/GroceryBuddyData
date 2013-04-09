@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Credit goes to: http://www.west-wind.com/weblog/posts/2012/Apr/02/Creating-a-JSONP-Formatter-for-ASPNET-Web-API
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http.Formatting;

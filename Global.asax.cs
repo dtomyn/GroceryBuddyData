@@ -28,13 +28,7 @@ namespace MyDataServices
             RegisterApiRoutes(GlobalConfiguration.Configuration);
 
             //register cors handler
-            GlobalConfiguration.Configuration.MessageHandlers.Add(new CorsHandler());
-
-            //Debugger.Break();
-
-            // WebApi Configuration to hook up formatters and message handlers
-            // optional
-           //RegisterApis(GlobalConfiguration.Configuration);
+            //GlobalConfiguration.Configuration.MessageHandlers.Add(new CorsHandler());
         }
 
         private void RegisterApiRoutes(HttpConfiguration configuration)
@@ -53,6 +47,8 @@ namespace MyDataServices
                    .Formatters
                    .Insert(0, new JsonpFormatter());
 
+            var appXmlType = GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
         }
 
         public static void RegisterApis(HttpConfiguration config)

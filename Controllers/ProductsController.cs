@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
@@ -18,19 +17,18 @@ namespace MyDataServices.Controllers
             if (HttpContext.Current.Application["productContext"] == null)
             {
                 HttpContext.Current.Application["productContext"] = new List<Product>();
-                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.Product1);
-                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.Product2);
+                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.CanOfCoke);
+                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.CanOfPepsi);
+                ((List<Product>)HttpContext.Current.Application["productContext"]).Add(ProductConstants.BoxOfKraftDinner);
             }
             ProductContext = (List<Product>)(HttpContext.Current.Application["productContext"]);
         }
 
-        // GET api/values
         public IEnumerable<Product> Get()
         {
             return ProductContext;
         }
 
-        // GET api/values/5
         public Product Get(string sku)
         {
             Product current = ProductContext.FirstOrDefault(b => b.Sku.Equals(sku, StringComparison.OrdinalIgnoreCase) && !b.IsDeleted);
@@ -44,7 +42,6 @@ namespace MyDataServices.Controllers
             }
         }
 
-        // POST api/values
         public void Post([FromBody]Product value)
         {
             //add only if does not exist already... otherwise update
@@ -62,8 +59,6 @@ namespace MyDataServices.Controllers
             }
         }
 
-        // PUT api/values/5
-        //public void Put(string sku, [FromBody]Product value)
         public void Put(int id, [FromBody]Product value)
         {
             Product current = ProductContext.FirstOrDefault(b => b.Id.Equals(id));
@@ -87,7 +82,6 @@ namespace MyDataServices.Controllers
             }
         }
 
-        // DELETE api/values/5
         public void Delete(int id)
         {
             Product current = ProductContext.FirstOrDefault(b => b.Id.Equals(id));
@@ -100,6 +94,5 @@ namespace MyDataServices.Controllers
                 current.IsDeleted = true;
             }
         }
-
     }
 }
